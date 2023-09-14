@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { API_URL } from "../../constants";
+import Post from "./Post";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -8,17 +9,22 @@ const PostsList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts`)
-      .then((r) => r.json())
-      .then((posts) => {
-        setPosts(posts);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.error(e);
-        setError("An error occurred. Awkward...");
-        setIsLoading(false);
-      });
+   async function fetchPosts() {
+     try {
+       const response = await fetch(`${API_URL}/posts`);
+       if (response.ok) {
+         const json = await response.json();
+         setPosts(json);
+       } else {
+         setError("Something went wrong");
+       }
+     } catch (error) {
+       setError(error.toString());
+     } finally {
+       setIsLoading(false);
+     }
+   }
+    fetchPosts();
   }, []);
   return (
     <div>
@@ -26,10 +32,7 @@ const PostsList = () => {
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {posts.map((post) => (
-        <div key={post.id}>
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
-        </div>
+        <Post key={post.id} post={post} />
       ))}
     </div>
   );
