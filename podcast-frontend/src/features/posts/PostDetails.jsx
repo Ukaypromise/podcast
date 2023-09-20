@@ -37,7 +37,6 @@ const PostDetails = () => {
       {post && (
         <>
           <h3>{post.title}</h3>
-            <p>{console.log(post)}</p>
           <p>{post.description}</p>
           <Link to="/">Back to all posts</Link>
         </>
