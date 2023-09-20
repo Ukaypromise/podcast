@@ -38,7 +38,9 @@ const PostDetails = () => {
         <>
           <h3>{post.title}</h3>
           <p>{post.description}</p>
-          <Link to="/">Back to all posts</Link>
+          <Link to="/">Back</Link>
+          {" | "}
+          <Link to={`/${id}/edit`}>Edit Post</Link>
         </>
       )}
     </div>
