@@ -6,6 +6,7 @@ const PostDetails = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   useEffect(() => {
     async function fetchCurrentPost() {
@@ -27,6 +28,22 @@ const PostDetails = () => {
     fetchCurrentPost();
   }, [id]);
 
+  const deletePost = async () => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        navigate("/");
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      setError(error.toString());
+      console.log(error);
+    }
+  }
+
   if(isLoading) {
     return <p>Loading...</p>
   }
@@ -41,6 +58,8 @@ const PostDetails = () => {
           <Link to="/">Back</Link>
           {" | "}
           <Link to={`/${id}/edit`}>Edit Post</Link>
+          {" | "}
+          <button onClick={deletePost} >Delete</button>
         </>
       )}
     </div>
