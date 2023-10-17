@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { API_URL } from "../../constants";
+import { updatePost, getAPost } from "../../services/PostService";
 
 const PostEditForm = () => {
   const [error, setError] = useState(null);
@@ -15,21 +15,10 @@ const PostEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: post.title,
-          description: post.description,
-        }),
-      });
-      if (response.ok) {
-        navigate(`/${id}`);
-      } else {
-        throw new Error("Something went wrong");
-      }
+      const updatedPost = await updatePost(post);
+      const { id } = updatedPost;
+
+      navigate(`/${id}`);
     } catch (error) {
       setError(error.toString());
       console.log(error);
@@ -39,14 +28,9 @@ const PostEditForm = () => {
   useEffect(() => {
     async function fetchCurrentPost() {
       try {
-        const response = await fetch(`${API_URL}/${id}`);
-        if (response.ok) {
-          const json = await response.json();
-          setPost(json);
-          setIsLoading(false);
-        } else {
-          throw new Error("Something went wrong");
-        }
+        const post = await getAPost(id);
+        setPost(post);
+        setIsLoading(false);
       } catch (error) {
         setError(error.toString());
         console.log(error);

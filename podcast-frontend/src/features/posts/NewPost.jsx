@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../constants";
+import { createPost } from "../../services/PostService";
 
 const NewPost = () => {
   const [title, setTitle] = useState("");
@@ -14,19 +14,9 @@ const NewPost = () => {
       description,
     };
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPost),
-      });
-      if (response.ok) {
-        const {id} = await response.json();
-        navigate(`/${id}`);
-      } else {
-        throw new Error("Something went wrong");
-      }
+      const post = await createPost(newPost);
+      const { id } = post;
+      navigate(`/${id}`);
     } catch (error) {
       console.log(error);
     }
