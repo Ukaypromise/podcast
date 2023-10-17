@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { API_URL } from "../../constants";
+import { getAllPosts } from "../../services/PostService";
 import Post from "./Post";
 
 const PostsList = () => {
@@ -11,13 +11,8 @@ const PostsList = () => {
   useEffect(() => {
    async function fetchPosts() {
      try {
-       const response = await fetch(API_URL);
-       if (response.ok) {
-         const json = await response.json();
-         setPosts(json);
-       } else {
-         setError("Something went wrong");
-       }
+        const posts = await getAllPosts();
+        setPosts(posts);
      } catch (error) {
        setError(error.toString());
      } finally {
