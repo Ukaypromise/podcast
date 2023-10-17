@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { getAllPosts } from "../../services/PostService";
+import { getAllPosts, deleteAPost } from "../../services/PostService";
 import Post from "./Post";
 
 const PostsList = () => {
@@ -24,14 +24,9 @@ const PostsList = () => {
 
   const deletePost = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setPosts(posts.filter((post) => post.id !== id));
-      } else {
-        throw new Error("Something went wrong");
-      }
+      await deleteAPost(id);
+      // setPosts(posts.filter((post) => post.id !== id));
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
     } catch (error) {
       setError(error.toString());
     }
