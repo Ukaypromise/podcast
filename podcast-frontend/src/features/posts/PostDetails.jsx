@@ -37,18 +37,29 @@ const PostDetails = () => {
     return <p>Loading...</p>;
   }
   return (
-    <div>
-      <h2>Post Details</h2>
-      {error && <p>{error}</p>}
+    <div className="max-w-md mx-auto mt-32 p-4 border border-gray-300 rounded-lg shadow-lg text-center">
+      <h2 className="text-3xl font-semibold mb-4">Post Details</h2>
+      {error && <p className="text-red-500">{error}</p>}
       {post && (
         <>
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
-          <Link to="/">Back</Link>
-          {" | "}
-          <Link to={`/${id}/edit`}>Edit Post</Link>
-          {" | "}
-          <button onClick={deletePost}>Delete</button>
+          <h3 className="text-xl font-semibold mt-4">{post.title}</h3>
+          <p className="text-gray-700 mt-2">{post.description}</p>
+          <div className="mt-4">
+            <Link to="/" className="text-blue-500 hover:underline">
+              Back
+            </Link>
+            <span className="mx-2 text-gray-500">|</span>
+            <Link to={`/${id}/edit`} className="text-blue-500 hover:underline">
+              Edit Post
+            </Link>
+            <span className="mx-2 text-gray-500">|</span>
+            <button
+              onClick={deletePost}
+              className="text-red-500 hover:underline"
+            >
+              Delete
+            </button>
+          </div>
         </>
       )}
     </div>

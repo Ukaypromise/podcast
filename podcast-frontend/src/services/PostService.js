@@ -30,4 +30,32 @@ async function deleteAPost(id) {
   return response.json();
 }
 
-export { deleteAPost, getAPost, getAllPosts };
+async function createPost(postData) {
+  const response = await fetch(`${API_URL}`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response.json();
+}
+
+async function updatePost(id, post) {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(post),
+  });
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response.json();
+}
+
+export { deleteAPost, getAPost, getAllPosts, createPost, updatePost };

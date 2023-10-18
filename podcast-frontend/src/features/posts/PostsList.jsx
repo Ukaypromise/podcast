@@ -9,16 +9,16 @@ const PostsList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-   async function fetchPosts() {
-     try {
+    async function fetchPosts() {
+      try {
         const posts = await getAllPosts();
         setPosts(posts);
-     } catch (error) {
-       setError(error.toString());
-     } finally {
-       setIsLoading(false);
-     }
-   }
+      } catch (error) {
+        setError(error.toString());
+      } finally {
+        setIsLoading(false);
+      }
+    }
     fetchPosts();
   }, []);
 
@@ -30,13 +30,13 @@ const PostsList = () => {
     } catch (error) {
       setError(error.toString());
     }
-  }
+  };
 
   return (
-    <div>
-      <h2>Posts</h2>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+    <div className=" mx-auto p-4">
+      <h2 className="text-3xl font-semibold mb-4">Posts</h2>
+      {isLoading && <p className="text-gray-500">Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
       {posts.map((post) => (
         <Post key={post.id} post={post} deletePost={deletePost} />
       ))}
