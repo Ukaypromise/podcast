@@ -5,12 +5,62 @@ class Api::V1::PostsController < ApplicationController
   def index
     @posts = Post.order(created_at: :desc)
 
-    render json: @posts
+    posts_with_attachments = @posts.map do |post|
+      attachments = {}
+
+      if post.image.attached?
+        attachments[:image] = url_for(post.image)
+      else
+        attachments[:image] = nil
+      end
+
+      if post.audio.attached?
+        attachments[:audio] = url_for(post.audio)
+      else
+        attachments[:audio] = nil
+      end
+
+      post.as_json.merge(attachments)
+    end
+
+    render json: posts_with_attachments
   end
+
+  # # GET /posts
+  # def index
+  #   @posts = Post.order(created_at: :desc)
+
+  #   posts_with_files = @posts.map do |post|
+  #     post_json = post.as_json
+  #     if post.image.attached?
+  #       post_json.merge!(image_url: url_for(post.image))
+  #     end
+  #     if post.audio.attached?
+  #       post_json.merge!(audio_url: url_for(post.audio))
+  #     end
+  #     post_json
+  #   end
+
+  #   render json: posts_with_files
+  # end
 
   # GET /posts/1
   def show
-    render json: @post
+    response_data = @post.as_json
+
+    if @post.image.attached?
+      response_data = response_data.merge(image: url_for(@post.image))
+    else
+      response_data = response_data.merge(image: nil)
+    end
+
+    if @post.audio.attached?
+      response_data = response_data.merge(audio: url_for(@post.audio))
+    else
+      response_data = response_data.merge(audio: nil)
+    end
+
+    render json: response_data
   end
 
   # POST /posts
@@ -39,13 +89,14 @@ class Api::V1::PostsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def post_params
-      params.require(:post).permit(:title, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def post_params
+    params.require(:post).permit(:title, :description, :image, :audio)
+  end
 end

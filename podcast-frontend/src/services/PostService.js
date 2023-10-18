@@ -33,10 +33,13 @@ async function deleteAPost(id) {
 async function createPost(postData) {
   const response = await fetch(`${API_URL}`, {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(postData),
+    // Does not need the headers
+    // headers: {
+    //   "content-type": "application/json",
+    // },
+    // Change this to postData
+    // body: JSON.stringify(postData),
+    body: postData,
   });
   if (!response.ok) {
     throw new Error(response.statusText);
