@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../../services/PostService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewPost = () => {
   const [title, setTitle] = useState("");
@@ -16,8 +18,16 @@ const NewPost = () => {
     try {
       const response = await createPost(newPost);
       navigate(`/${response.id}`);
+      toast.success("Post created successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } catch (error) {
       console.error("Failed to create post: ", error);
+      toast.error("Failed to create the post", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 

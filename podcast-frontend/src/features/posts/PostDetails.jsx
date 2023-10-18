@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getAllPosts, deleteAPost, getAPost } from "../../services/PostService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PostDetails = () => {
   const [error, setError] = useState(null);
@@ -26,10 +28,18 @@ const PostDetails = () => {
     try {
       await deleteAPost(id);
       navigate("/");
+      toast.success("Post was deleted successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } catch (error) {
       setError(error.toString());
       console.error("Failed to delete post", error);
       console.log(error);
+      toast.error("Post was deleted successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 

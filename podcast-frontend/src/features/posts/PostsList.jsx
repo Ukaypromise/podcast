@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getAllPosts, deleteAPost } from "../../services/PostService";
 import Post from "./Post";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -27,8 +29,16 @@ const PostsList = () => {
       await deleteAPost(id);
       // setPosts(posts.filter((post) => post.id !== id));
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      toast.success("Post was deleted successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } catch (error) {
       setError(error.toString());
+      toast.error("Post was not deleted", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 

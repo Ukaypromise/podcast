@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updatePost, getAPost } from "../../services/PostService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PostEditForm = () => {
   const [error, setError] = useState(null);
@@ -22,9 +24,17 @@ const PostEditForm = () => {
     try {
       const response = await updatePost(id, updatedPost);
       navigate(`/${response.id}`);
+      toast.success("Post updated successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } catch (error) {
       setError(error.toString());
       console.log(error);
+      toast.error("Post was not updated", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 

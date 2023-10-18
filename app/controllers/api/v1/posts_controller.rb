@@ -20,7 +20,7 @@ class Api::V1::PostsController < ApplicationController
     if @post.save
       render json: @post, status: :created, location: api_v1_post_url(@post)
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: @post.errors.full_messages, status: :unprocessable_entity
     end
   end
 
