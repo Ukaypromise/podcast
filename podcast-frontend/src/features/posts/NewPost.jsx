@@ -14,11 +14,10 @@ const NewPost = () => {
       description,
     };
     try {
-      const post = await createPost(newPost);
-      const { id } = post;
-      navigate(`/${id}`);
+      const response = await createPost(newPost);
+      navigate(`/${response.id}`);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to create post: ",error);
     }
   };
 

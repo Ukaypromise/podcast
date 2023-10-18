@@ -14,11 +14,14 @@ const PostEditForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const updatedPost = await updatePost(post);
-      const { id } = updatedPost;
 
-      navigate(`/${id}`);
+    const updatedPost = {
+      title: post.title,
+      description: post.description,
+    };
+    try {
+      const response = await updatePost(id, updatedPost);
+      navigate(`/${response.id}`);
     } catch (error) {
       setError(error.toString());
       console.log(error);

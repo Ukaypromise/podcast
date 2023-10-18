@@ -30,13 +30,13 @@ async function deleteAPost(id) {
   return response.json();
 }
 
-async function createPost(newPost) {
+async function createPost(postData) {
   const response = await fetch(`${API_URL}`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(newPost),
+    body: JSON.stringify(postData),
   });
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -44,8 +44,8 @@ async function createPost(newPost) {
   return response.json();
 }
 
-async function updatePost(post) {
-  const response = await fetch(`${API_URL}/${post.id}`, {
+async function updatePost(id, post) {
+  const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {
       "content-type": "application/json",
